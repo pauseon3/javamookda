@@ -1042,7 +1042,7 @@ $("#amplay").onclick=()=>amPlay(0);
 $("#amshuf").onclick=()=>amPlay(Math.floor(Math.random()*AM_T.length));
 $("#ampp").onclick=()=>{if(amI<0)return;if(amPlaying){amA.pause();amPlaying=false}else{const p=amA.play();if(p&&p.catch)p.catch(()=>{});amPlaying=true}amDraw()};
 $("#amnx").onclick=()=>amPlay((amI+1)%AM_T.length);
-$("#amalb").innerHTML=AM_O.map((t,i)=>`<div style="flex:none;width:130px"><div style="width:130px;height:130px;border-radius:8px;background:linear-gradient(160deg,${AM_C[i].split(",")[0]},${AM_C[i].split(",")[1]});box-shadow:0 4px 12px #0002"></div><div style="font-size:14px;margin-top:7px;line-height:1.3;white-space:pre-line">${t}</div><div style="font-size:12px;color:#8e8e93">${AM_Y[i]}</div></div>`).join("");
+$("#amalb").innerHTML=AM_O.map((t,i)=>`<div style="flex:none;width:130px"><div style="width:130px;height:130px;border-radius:8px;background:linear-gradient(160deg,${AM_C[i].split(",")[0]},${AM_C[i].split(",")[1]});box-shadow:0 4px 12px #0002;position:relative;overflow:hidden"><img src="music/a${i+1}.jpg" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div><div style="font-size:14px;margin-top:7px;line-height:1.3;white-space:pre-line">${t}</div><div style="font-size:12px;color:#8e8e93">${AM_Y[i]}</div></div>`).join("");
 $("#amalb").querySelectorAll("div[style*='flex:none']").forEach(e=>e.onclick=()=>toast("준비 중이에요"));
 
 // 재생바: 재생 위치에 따라 움직이고, 누르거나 끌면 이동해요
