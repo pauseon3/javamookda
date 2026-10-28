@@ -62,7 +62,7 @@ body{background:#1c1c1e;display:flex;justify-content:center;align-items:center;f
 .nm{font-size:12px;color:#333;margin-bottom:3px}
 .bb{background:#fff;padding:8px 11px;border-radius:12px;font-size:15px;line-height:1.4;max-width:240px;word-break:keep-all;overflow-wrap:anywhere;white-space:pre-wrap}
 .me .bb{background:#fee500}
-.day{text-align:center;font-size:12px;color:#555;background:#0001;border-radius:12px;padding:4px 12px;width:max-content;margin:0 auto 14px}
+.day{text-align:center;font-size:12px;color:#555;background:#0001;border-radius:12px;padding:4px 12px;width:max-content;margin:22px auto 16px}
 @keyframes pop{from{opacity:0;transform:translateY(10px)}}
 /* safari */
 #sf{background:#f2f2f7}
@@ -93,6 +93,8 @@ body{background:#1c1c1e;display:flex;justify-content:center;align-items:center;f
 .app{position:absolute}.body{min-height:0}.av{position:relative}
 .sub{position:absolute;inset:0;padding-top:54px;background:#fff;color:#000;display:flex;flex-direction:column;z-index:5;transform:translateX(100%);transition:transform .3s;pointer-events:none}
 .sub.on{transform:none;pointer-events:auto}
+/* 닫힌 앱 안의 어떤 화면도 홈 화면의 클릭을 가로채지 못하게 */
+.app:not(.open) *{pointer-events:none!important}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;min-height:44px;font-size:17px;border-bottom:.5px solid #0002;background:#f9f9f9}
 .nav .bk{color:#007aff;display:flex;align-items:center;gap:6px;min-width:90px;cursor:pointer}
 .nav .t{font-weight:600;text-align:center;flex:1}.nav .r{min-width:90px;text-align:right}
@@ -200,6 +202,21 @@ body.sa #sb,body.sa #island{display:none}
 #ftv .ffc .fend{background:#ff3b30}#ftv .ffc .fend svg{fill:#fff;stroke:none;width:30px;height:30px}
 .jmt:empty::before{content:"잼미나이에게 물어보기";color:#8a8f98}
 .jmt.cur::after{content:"";display:inline-block;width:2px;height:18px;background:#4f8bff;vertical-align:-3px;margin-left:1px;animation:jmb 1s steps(1) infinite}
+
+/* 잼미나이 왼쪽 채팅 목록 */
+#jmd{position:absolute;inset:0;z-index:40;pointer-events:none}
+#jmd .jbg{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s}
+#jmd .jpn{position:absolute;left:0;top:0;bottom:0;width:80%;background:#f8fafd;transform:translateX(-104%);transition:transform .32s cubic-bezier(.3,.8,.3,1);padding:64px 12px 26px;display:flex;flex-direction:column;border-radius:0 26px 26px 0;box-shadow:none}
+#jmd.on{pointer-events:auto}#jmd.on .jbg{background:rgba(0,0,0,.4)}#jmd.on .jpn{transform:none;box-shadow:6px 0 30px #0003}
+.jsr{display:flex;align-items:center;gap:10px;background:#e9eef6;border-radius:24px;padding:10px 14px;margin-bottom:10px}
+.jsr input{flex:1;border:0;background:transparent;font-size:15px;outline:0;min-width:0;color:#1f1f1f}
+.jnew{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:24px;font-size:15.5px;font-weight:500;color:#1f1f1f;cursor:pointer}
+.jnew.on,.jmi.on{background:#d3e3fd}
+.jlb{font-size:13px;color:#5f6368;padding:16px 14px 6px;font-weight:500}
+#jml{flex:1;overflow-y:auto;min-height:0}
+.jmi{padding:11px 14px;border-radius:24px;font-size:15px;color:#1f1f1f;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jfoot{display:flex;align-items:center;gap:10px;padding:12px 8px 0;border-top:.5px solid #0002;font-size:14px;color:#444}
+.jfoot i{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#ffb6c9,#ff7aa2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;font-style:normal}
 @keyframes jmb{50%{opacity:0}}
 @keyframes jmf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes jmr{to{transform:rotate(360deg)}}
@@ -589,18 +606,29 @@ body.sa #sb,body.sa #island{display:none}
 <!-- 잼미나이 -->
 <div class="app" id="jm" data-dark="1" style="background:#fff">
  <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 16px 8px">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+  <svg id="jmmenu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" style="cursor:pointer;padding:10px;margin:-10px;box-sizing:content-box"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
   <div style="font-size:21px;font-weight:600;background:linear-gradient(90deg,#4f8bff,#a05cff 60%,#ff6b8a);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.3px">잼미나이 <span style="font-size:13px;color:#777;-webkit-text-fill-color:#777">▾</span></div>
   <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ffb6c9,#ff7aa2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px">현</div>
  </div>
  <div class="body" id="jmb" style="padding:10px 16px 16px">
   <div id="jmg" style="margin-top:70px"><svg width="40" height="40" viewBox="0 0 24 24"><defs><linearGradient id="jmgr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f8bff"/><stop offset=".55" stop-color="#a05cff"/><stop offset="1" stop-color="#ff6b8a"/></linearGradient></defs><path d="M12 0C12.7 6.500 17.500 11.300 24 12C17.500 12.700 12.700 17.500 12 24C11.300 17.500 6.500 12.700 0 12C6.500 11.300 11.300 6.500 12 0Z" fill="url(#jmgr)"/></svg><div style="font-size:30px;font-weight:600;margin-top:12px;line-height:1.25;background:linear-gradient(90deg,#4f8bff,#a05cff 60%,#ff6b8a);-webkit-background-clip:text;background-clip:text;color:transparent">안녕하세요, 현이님</div><div style="font-size:26px;color:#c4c7c5;margin-top:4px;font-weight:600">오늘은 무슨 잼 얘기를 할까요?</div></div>
   <div id="jmc"></div>
+  <div id="jmp" style="display:none;flex-direction:column;margin-top:6px"></div>
  </div>
  <div style="padding:8px 14px 34px;background:#fff">
   <div style="background:#f0f4f9;border-radius:28px;padding:12px 14px 10px;display:flex;flex-direction:column;gap:12px">
    <div id="jmt" class="jmt" style="font-size:16px;min-height:22px;color:#1f1f1f;line-height:1.4"></div>
    <div style="display:flex;align-items:center;gap:14px;color:#444"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span style="font-size:14px;background:#e3e8ef;border-radius:14px;padding:5px 11px">🍓 잼 모드</span><span style="flex:1"></span><svg width="22" height="22" viewBox="0 0 24 24" fill="#444"><path d="M12 15a3.500 3.500 0 0 0 3.500-3.500V6a3.500 3.500 0 0 0-7 0v5.500A3.500 3.500 0 0 0 12 15zm5.500-3.500a5.500 5.500 0 0 1-11 0H5a7 7 0 0 0 6.200 6.950V21h1.600v-2.550A7 7 0 0 0 19 11.500z"/></svg><div id="jms" style="width:38px;height:38px;border-radius:50%;background:#d3e3fd;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div></div>
+  </div>
+ </div>
+ <div id="jmd">
+  <div class="jbg"></div>
+  <div class="jpn">
+   <div class="jsr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="jmq" placeholder="채팅 검색" autocomplete="off"></div>
+   <div class="jnew" id="jmnew"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>새 채팅</div>
+   <div class="jlb">채팅</div>
+   <div id="jml"></div>
+   <div class="jfoot"><i>현</i><span>현이</span></div>
   </div>
  </div>
 </div>
@@ -662,7 +690,7 @@ body.sa #sb,body.sa #island{display:none}
 </div>
 
 <div id="bar"></div>
-<div id="alm"><div><div class="a1"><i>29</i>캘린더</div><div class="a2">10월 29일 목요일</div><div class="a3">종일</div><div class="a4">자격증 접수하기</div></div>
+<div id="alm"><div><div class="a1"><i>29</i>캘린더</div><div class="a2">10월 29일 목요일</div><div class="a3">종일</div><div class="a4">보들자격증 시험 접수하는 날</div></div>
  <div id="almsl"><span>밀어서 해제</span><div id="almk"><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div></div></div>
 <audio id="au" preload="none"></audio>
 </div>
@@ -769,7 +797,7 @@ function mk(a,dock){
 apps.slice(0,4).forEach(a=>$("#dock").appendChild(mk(a)));
 apps.slice(4).forEach(a=>$("#grid").appendChild(mk(a)));
 
-let cur=null;const done={};
+let cur=null;const done={};let gmT=0;
 const CHEV='<svg width="12" height="20" viewBox="0 0 12 20"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 document.querySelectorAll(".bk").forEach(e=>e.innerHTML=CHEV+"<span>"+(e.dataset.l||"")+"</span>");
 document.querySelectorAll(".ic2").forEach(e=>e.innerHTML=CHEV);
@@ -778,17 +806,24 @@ document.querySelectorAll(".nme").forEach(e=>e.textContent=NAME);
 function openApp(id,from){
   const el=$("#"+id);
   if(from){const p=ph.getBoundingClientRect(),r=from.getBoundingClientRect();el.style.transformOrigin=(r.left+r.width/2-p.left)+"px "+(r.top+r.height/2-p.top)+"px"}
-  cur=id;el.classList.add("open");ph.classList.toggle("dark",el.dataset.dark==="1");if(id==="jm")setTimeout(gmStart,650);
+  cur=id;el.classList.add("open");ph.classList.toggle("dark",el.dataset.dark==="1");if(id==="jm"){clearTimeout(gmT);gmT=setTimeout(gmStart,2000)}
   if(id==="cl")calAlmArm();
   hSet(hWant());
+}
+// 앱만 닫기 (뒤로가기 기록은 그대로) — 알림 팝업을 눌러 다른 앱으로 바로 갈 때 써요
+function leaveApp(){
+  if(cur==="call")stopCall();
+  if(!cur)return;
+  const was=cur;
+  if(was==="cl")clearTimeout(calAlmT);
+  if(was==="jm")jmDrawer(0);
+  $("#"+cur).classList.remove("open");cur=null;ph.classList.remove("dark");
+  if(was==="qn")qReset();
 }
 function goHome(){
   if(!cur)return;
   if(cur==="call"){stopCall();hSet(hWant());return}
-  const was=cur;
-  if(was==="cl")clearTimeout(calAlmT);
-  $("#"+cur).classList.remove("open");cur=null;ph.classList.remove("dark");
-  if(was==="qn")qReset();
+  leaveApp();
   hSet(0);
 }
 // ===== 브라우저/폰 뒤로가기 연동 =====
@@ -875,7 +910,7 @@ function kkList(){
 }
 let kkLast=null;
 function kkAdd(r,x,mine,tm){
-  const b=$("#kkb"),d=document.createElement("div"),who=mine?"me":r.k,grp=kkLast===who;
+  const b=$("#kkb"),d=document.createElement("div"),who=mine?"__mine":r.k,grp=kkLast===who;
   kkLast=who;tm=tm||r.t;
   d.className="km"+(mine?" me":"")+(grp?" gp":"");
   if(mine){
@@ -887,10 +922,31 @@ function kkAdd(r,x,mine,tm){
   d.querySelector(".bb").textContent=x;
   b.appendChild(d);shrink(d.querySelector(".bb"));b.scrollTop=b.scrollHeight;
 }
+// 햄스터 채팅방: 이미 나눈 지난 대화 (황=상대, 나=현이) — 여기서 고치면 돼요
+const KH=[["2026년 10월 27일 화요일", [["나", "이것 봐 봐!", "2:17pm"], ["나", "MAP:수원 타임빌라스", "2:18pm"], ["황", "타임빌라스에서도 먼작귀 굿즈가 팔아?", "2:27pm"], ["황", "평일이면 웨이팅 없으려나?", "2:27pm"], ["나", "그렇지 않을까?", "3:56pm"], ["나", "29일에 가 보자!", "3:56pm"], ["황", "응 좋아", "4:04pm"], ["황", "재미있겠다", "4:04pm"], ["황", "애기 오늘 하루도 파이팅이야", "4:05pm"]]], ["2026년 10월 28일 수요일", [["황", "나 이제 자리 파할 것 같아", "10:56pm"], ["나", "택시 불러 줄까? 일산 어디서 출발해?", "10:59pm"], ["나", "지원이 집 주소 여기 맞지?", "11:00pm"], ["나", "MAP:구디역", "11:00pm"], ["황", "아니 나 부장님이 택시 불러 주셨어", "11:08pm"], ["황", "괜찮아 고마워 이 아기 벤츠야", "11:08pm"], ["나", "오 당연히 불러 줘야지", "11:13pm"], ["나", "잘됐네! 조심해서 들어가 공주", "11:13pm"], ["황", "현아 나 이제 집 왔어", "11:48pm"], ["황", "아 인간적으로 일산 너무 멀다", "11:49pm"], ["황", "술도 안 먹는데 맨정신으로 있는 건 고역이야", "11:49pm"], ["황", "아기 자려고 누웠어?", "11:50pm"], ["나", "나 자야 할 것 같아.. 뜨거운 바비가 날 깔아뭉개고 있어...!", "11:51pm"], ["나", "져니 고생 많았어..", "11:52pm"], ["나", "사랑해 ..", "11:52pm"], ["황", "내가 더 사랑해", "11:56pm"], ["황", "꿈꾸지 말고 푹 자 애기", "11:56pm"]]]];
+const khT=t=>t.replace(/^(\d+:\d+)\s*(am|pm)$/i,(m,h,a)=>(a.toLowerCase()==="pm"?"오후 ":"오전 ")+h);
+function kkHist(r){
+  const b=$("#kkb");
+  KH.forEach(g=>{
+    b.insertAdjacentHTML("beforeend",'<div class="day">'+g[0]+'</div>');kkLast=null;
+    g[1].forEach((m,j)=>{
+      const mine=m[0]==="나",map=m[1].startsWith("MAP:"),nx=g[1][j+1];
+      kkAdd(r,map?" ":m[1],mine,khT(m[2]));
+      const row=b.lastElementChild,bb=row.querySelector(".bb");
+      row.querySelectorAll(".rc").forEach(e=>e.remove());
+      if(nx&&nx[0]===m[0]&&nx[2].replace(/\s/g,"")===m[2].replace(/\s/g,""))row.querySelector(".kt").style.display="none";
+      if(map){bb.style.width="";bb.style.padding="0";bb.style.overflow="hidden";
+        bb.innerHTML='<div style="width:210px"><div style="height:92px;background:linear-gradient(135deg,#e8f1e0,#cfe3f3);position:relative"><svg viewBox="0 0 210 92" width="210" height="92" style="position:absolute;inset:0"><path d="M-5 70L215 25" stroke="#fff" stroke-width="9"/><path d="M70 100L110 -5" stroke="#fff" stroke-width="6"/><path d="M150 100L175 -5" stroke="#fff" stroke-width="4"/></svg><div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-90%);font-size:28px">📍</div></div><div style="padding:8px 11px;font-size:14px"><b>'+m[1].slice(4)+'</b><div style="font-size:11px;color:#888">지도 보기</div></div></div>'}
+    });
+  });
+  kkLast=null;
+}
 function kkRoom(i){
   const r=KR[i],b=$("#kkb"),tok=++kT,isMe=r.k==="me";kRoom=i;
   $("#kkn").textContent=r.n;$("#kkr").classList.add("on");
-  b.innerHTML='<div class="day">2026년 10월 29일 목요일</div>';kkLast=null;
+  b.innerHTML="";kkLast=null;
+  if(isMe)kkHist(r);
+  b.insertAdjacentHTML("beforeend",'<div class="day">2026년 10월 29일 목요일</div>');kkLast=null;
   if(isMe){
     if(done["k"+i]){kmLog.forEach(m=>kkAdd(r,m.x,m.me,m.t));return}
     done["k"+i]=1;kmBusy=true;
@@ -1013,17 +1069,55 @@ $("#amnx").innerHTML=amIc(AMNX,26,"#111");
 Object.assign($("#ampp").style,{display:"flex",alignItems:"center",justifyContent:"center"});
 amDraw();
 
-// ===== 잼미나이: 들어가면 저절로 질문을 입력하고 전송해요 =====
+// ===== 잼미나이: 왼쪽 채팅 목록 (지난 채팅은 여기서 고쳐요) =====
+const JMACT="<div style=\"display:flex;gap:18px;color:#777;font-size:18px;margin:2px 0 10px\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#777\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.5 2.5V9H19a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7\"/></svg><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#777\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"transform:scaleY(-1)\"><path d=\"M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.5 2.5V9H19a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7\"/></svg><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#777\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3\"/></svg><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"#777\"><circle cx=\"12\" cy=\"5\" r=\"1.8\"/><circle cx=\"12\" cy=\"12\" r=\"1.8\"/><circle cx=\"12\" cy=\"19\" r=\"1.8\"/></svg></div>";
+const JC=[{"t": "바비와 사나의 귀여움 비결", "turns": [["우리 집 바비랑 사나는 왜 이렇게 귀여울까.....", ["<p>그건 아마 <b>귀여움 과다 복용</b> 때문일 거예요 🍓 바비랑 사나가 유독 귀엽게 느껴지는 데에는 꽤 그럴듯한 이유가 있어요.</p>", "<div class=\"jl\"><span>🐾</span><div><b>아기 같은 생김새</b><div class=\"jq\">동그란 얼굴, 큰 눈, 작은 코는 사람이 “지켜 주고 싶다”고 느끼는 아기 얼굴의 특징과 닮았어요.</div></div></div><div class=\"jl\"><span>💗</span><div><b>사랑 호르몬</b><div class=\"jq\">반려동물과 눈을 맞추고 쓰다듬을 때 사람의 옥시토신(애정 호르몬)이 늘어난다는 연구들이 있어요.</div></div></div><div class=\"jl\"><span>🍞</span><div><b>예측 불가한 행동</b><div class=\"jq\">식빵 굽다가 갑자기 우다다, 박스만 보면 쏙 들어가기… 매일 보는데도 매번 새로 귀엽죠.</div></div></div>", "<p>거기에 <b>함께 지낸 시간이 만든 애정 필터</b>까지 얹히니 귀여움이 안 느껴질 수가 없어요. 현이 님이 귀여움을 잘 알아보는 눈을 가진 거예요 😸</p>"]], ["둘이 같이 있으면 더 귀여워 ㅠㅠ 사진 잘 찍는 법 있어?", ["<p>둘이 붙어 있는 순간은 놓치면 아깝죠! 📸 이렇게 해 보세요.</p>", "<p>• <b>눈높이 맞추기</b>: 바닥에 엎드려서 같은 높이에서 찍으면 표정이 확 살아나요.<br>• <b>자연광</b>: 창가 쪽 빛이 제일 예쁘고, 플래시는 끄는 게 좋아요.<br>• <b>연속 촬영</b>: 움직이는 순간은 연사로 찍고 마음에 드는 걸 고르세요.<br>• <b>시선 끌기</b>: 간식이나 장난감을 렌즈 옆에서 흔들면 카메라를 쳐다봐요.<br>• <b>기다리기</b>: 둘이 편안해질 때까지 기다리면 제일 좋은 사진이 나와요.</p>"]]]}, {"t": "애인의 “내가 낳았다” 심리", "turns": [["애인이 나를 너무 귀여워해서 막 자기가 나를 낳았다고 하는데 무슨 심리일까?", ["<p>ㅋㅋㅋ 이건 <b>애정이 넘치다 못해 흘러넘친 상태</b>예요 🍓 보통 이런 마음이 섞여 있어요.</p>", "<div class=\"jl\"><span>💗</span><div><b>“귀엽다”로는 모자란 마음</b><div class=\"jq\">귀엽다는 말로 다 담기지 않으니, “내가 낳았다”처럼 과장된 표현으로 애정의 크기를 말하는 거예요.</div></div></div><div class=\"jl\"><span>🛡️</span><div><b>보호 본능</b><div class=\"jq\">귀여운 대상을 보면 돌봐 주고 싶은 마음이 커지는데, 그게 “내 새끼 같다”는 표현으로 나와요.</div></div></div><div class=\"jl\"><span>🎈</span><div><b>둘만의 장난</b><div class=\"jq\">이런 유치한 말투는 서로 편하고 친밀하다는 신호예요. 아무 사이에나 못 하는 말이거든요.</div></div></div>", "<p>정리하면 <b>“너는 나한테 너무 소중하고 귀여운 존재야”</b>를 아주 크게 말한 거예요. 걱정할 것 없는 달달한 신호랍니다 💗</p>"]], ["그럼 나도 맞받아쳐야 해?", ["<p>맞받아치면 더 재밌죠 ㅎㅎ 분위기에 맞게 골라 보세요.</p>", "<div class=\"jl\"><span>😎</span><div><b>당당형</b><div class=\"jq\">“엄마, 오늘 미역국은 언제 끓여 줘?”</div></div></div><div class=\"jl\"><span>😆</span><div><b>효도형</b><div class=\"jq\">“낳아 주셔서 감사합니다, 어머니. 오늘은 제가 맛있는 거 사 드릴게요 ㅎㅎ”</div></div></div><div class=\"jl\"><span>🥰</span><div><b>직구형</b><div class=\"jq\">“그렇게까지 귀여워해 줘서 나 진짜 행복해.”</div></div></div>"]], ["근데 가끔 아기 취급받는 느낌이라 살짝 서운할 때도 있어...", ["<p>그 마음도 충분히 이해돼요. 사랑받는 건 좋은데 <b>든든한 사람으로도 봐 줬으면</b> 하는 마음이 들 때가 있죠.</p>", "<p>이럴 땐 서운함을 크게 만들지 말고 <b>가볍게 한마디</b> 해 보세요.</p><div class=\"jl\"><span>💬</span><div><div class=\"jq\">“귀엽다고 해 주는 거 너무 좋은데, 가끔은 나 든든한 사람으로도 봐 줘 ㅎㅎ”</div></div></div><p>좋아하는 건 좋다고 말하면서 바라는 점을 덧붙이는 방식이라, 상대도 편하게 받아들일 거예요 🍓</p>"]]]}, {"t": "저당 굴소스 요리 레시피", "turns": [["저당 굴소스로 해 먹을 때 요리 레시피 있어? 있으면 몇 가지 알려 줘 봐.", ["<p>저당 굴소스는 단맛이 덜해서 <b>채소·단백질이랑 짝꿍</b>으로 쓰기 좋아요 🍓 간단한 것 몇 가지 알려 드릴게요.</p>", "<div class=\"jl\"><span>🍳</span><div><b>굴소스 계란볶음밥</b><div class=\"jq\">팬에 기름을 두르고 다진 대파를 볶다가 계란을 스크램블로 익혀요. 밥을 넣고 굴소스 1큰술을 팬 가장자리에 둘러 볶으면 감칠맛이 확 살아요. 후추로 마무리!</div></div></div><div class=\"jl\"><span>🥬</span><div><b>청경채 굴소스 볶음</b><div class=\"jq\">마늘을 볶아 향을 낸 뒤 청경채를 넣고 센 불에서 빠르게 볶다가 굴소스로 간해요.</div></div></div><div class=\"jl\"><span>🍄</span><div><b>버섯 두부 굴소스 조림</b><div class=\"jq\">두부를 노릇하게 구운 뒤 버섯, 굴소스, 물 약간을 넣고 자작하게 졸여요.</div></div></div><div class=\"jl\"><span>🍜</span><div><b>굴소스 야끼우동</b><div class=\"jq\">양배추, 양파, 숙주와 우동면을 볶다가 굴소스로 간하면 끝!</div></div></div>", "<p>💡 저당 제품은 단맛이 약하니 <b>양파를 같이 볶아</b> 자연스러운 단맛을 내 보세요. 굴소스는 짠 편이라 한 번에 넣지 말고 조금씩 간을 보는 게 좋아요.</p>"]], ["2번 청경채 볶음은 양념 비율이 어떻게 돼?", ["<p>1인분 기준으로 알려 드릴게요 🥬</p>", "<div class=\"jl\"><span>🧂</span><div><b>재료</b><div class=\"jq\">청경채 3~4포기, 다진 마늘 1/2큰술, 굴소스 1큰술, 물 2큰술, 식용유 1큰술, 후추 약간</div></div></div><div class=\"jl\"><span>👩‍🍳</span><div><b>만드는 법</b><div class=\"jq\">① 팬에 기름과 마늘을 넣고 약불에서 향을 내요.<br>② 청경채를 넣고 센 불로 올려 30초쯤 볶아요.<br>③ 굴소스와 물을 둘러 20~30초 더 볶고 후추로 마무리!</div></div></div>", "<p>오래 볶으면 물러지니 <b>센 불에서 짧게</b>가 포인트예요.</p>"]], ["자취생이 제일 쉽게 할 수 있는 건 뭐야?", ["<p>그건 단연 <b>1번 계란볶음밥</b>이에요! 팬 하나로 5~10분이면 끝나요 🍳</p>", "<p>더 귀찮은 날엔 <b>전자레인지 양배추 굴소스 찜</b>도 좋아요. 썬 양배추를 내열 용기에 담고 굴소스 1큰술과 물 1큰술을 섞어 뿌린 뒤, 랩을 씌워 3~4분 돌리면 끝! 여기에 냉동 채소 믹스를 쓰면 손질도 필요 없어요 🍓</p>"]]]}, {"t": "살 안 찌는 간식 존재 여부", "turns": [["살 안 찌는 간식...... 세상에 존재할까......?", ["<p>솔직히 말하면 <b>“절대 안 찌는 간식”은 전설 속 동물</b>이에요 🦄 살은 하루 전체로 먹는 양이 좌우해서, 아무리 건강한 간식도 많이 먹으면 쪄요. 하지만 <b>덜 부담되는 간식</b>은 분명히 있어요!</p>", "<div class=\"jl\"><span>🥚</span><div><b>삶은 계란</b><div class=\"jq\">단백질이 많아서 든든함이 오래가요.</div></div></div><div class=\"jl\"><span>🥛</span><div><b>무가당 그릭요거트</b><div class=\"jq\">포만감이 좋고, 과일을 조금 올리면 달콤하게 먹을 수 있어요.</div></div></div><div class=\"jl\"><span>🥒</span><div><b>오이·당근·방울토마토</b><div class=\"jq\">입이 심심할 때 아삭하게 먹기 좋아요.</div></div></div><div class=\"jl\"><span>🥜</span><div><b>견과류 한 줌</b><div class=\"jq\">건강한 지방이지만 열량이 높으니 딱 한 줌만!</div></div></div>", "<p>💡 <b>봉지째 먹지 말고 그릇에 덜어서, 천천히</b> 먹는 것만으로도 간식 양이 확 줄어요.</p>"]], ["그럼 밤에 먹어도 괜찮은 건?", ["<p>밤에는 <b>가볍고 자극 없는 것</b>이 좋아요 🌙</p>", "<p>• <b>괜찮은 편</b>: 따뜻한 우유나 두유 한 컵, 무가당 요거트, 오이, 방울토마토, 삶은 계란 하나<br>• <b>피하면 좋은 것</b>: 라면, 튀김, 과자, 맵고 짠 음식 (속이 불편하고 다음 날 얼굴이 붓기 쉬워요)</p><p>자기 2~3시간 전에는 먹는 걸 마무리하면 속이 한결 편하답니다 🍓</p>"]]]}, {"t": "넘어진 무릎 통증", "turns": [["넘어진 무릎이 콕콕 쑤시고 아플 때 어떻게 해? 파스 붙여도 아프다 ㅠ", ["<p>아이고, 많이 아팠겠어요 ㅠㅠ 우선 이렇게 해 보세요.</p>", "<div class=\"jl\"><span>🩹</span><div><b>상처부터 확인</b><div class=\"jq\">피가 나거나 긁힌 곳은 흐르는 물로 씻고 소독한 뒤 밴드나 거즈로 덮어 주세요.</div></div></div><div class=\"jl\"><span>🧊</span><div><b>냉찜질</b><div class=\"jq\">다친 직후 며칠은 붓고 콕콕 쑤시는 시기라서, 수건으로 감싼 얼음주머니를 10~20분씩 대 주면 좋아요. 얼음을 피부에 직접 대면 안 돼요.</div></div></div><div class=\"jl\"><span>🛋️</span><div><b>쉬기</b><div class=\"jq\">계단이나 쪼그려 앉기는 피하고, 누울 땐 다리를 베개 위에 올려 두세요.</div></div></div>", "<p>파스는 <b>상처 위에는 붙이면 안 되고</b>, 특히 열이 나는 온열 파스는 다친 직후에 붓기를 더 키울 수 있어요. 파스를 붙여도 아픈 건 이상한 게 아니에요 ㅠㅠ</p>"]], ["파스는 언제부터 붙이면 돼?", ["<p>붓기와 열감이 가라앉고 <b>피부 상처가 아문 뒤</b>, 보통 2~3일 지나 뻐근함이 남을 때 쓰는 게 좋아요.</p>", "<p>• 처음에는 냉파스, 시간이 지나 뻐근할 때는 온열 파스를 쓰기도 해요.<br>• 피부가 가렵거나 빨개지거나 따가우면 바로 떼 주세요.<br>• 같은 자리에 오래 붙여 두지 말고, 제품 설명서를 꼭 확인하세요.</p>"]], ["그럼 병원은 언제 가야 해?", ["<p>아래에 하나라도 해당하면 <b>정형외과 진료</b>를 받아 보세요 🏥</p>", "<p>• 다리에 체중을 싣기 힘들거나 절뚝거릴 때<br>• 무릎이 많이 붓고 멍이 점점 커질 때<br>• 무릎이 잘 구부러지거나 펴지지 않을 때<br>• 밤에도 심하게 아플 때<br>• 상처가 빨갛게 붓고 열이 나거나 고름이 보일 때<br>• 2~3일이 지나도 좋아지지 않을 때</p><p>저는 의사가 아니라서 정확한 진단은 못 해 드려요. 걱정되면 미루지 말고 꼭 진료받으세요 💗</p>"]]]}];
+let jmSent=0,jmV="cur",jmReady=0;
+function jmView(v){
+  jmV=v;const g=$("#jmg"),c=$("#jmc"),p=$("#jmp");
+  if(typeof v==="number"){
+    const ch=JC[v];let h="";
+    ch.turns.forEach((tn,ti)=>{
+      h+='<div class="jmu" style="animation:none;margin-top:'+(ti?18:0)+'px">'+tn[0]+'</div>';
+      tn[1].forEach(x=>h+='<div class="jmm" style="animation:none">'+x+'</div>');
+    });
+    h+='<div class="jmm" style="animation:none;margin-top:6px">'+JMACT+'</div>';
+    p.innerHTML=h;p.style.display="flex";g.style.display="none";c.style.display="none";
+    $("#jmb").scrollTop=0;
+  }else{
+    p.style.display="none";
+    if(v==="cur"&&jmSent){g.style.display="none";c.style.display="flex"}
+    else{g.style.display="";c.style.display="none"}
+  }
+}
+function jmList(){
+  const q=($("#jmq").value||"").trim(),L=$("#jml");L.innerHTML="";
+  const items=[];if(jmSent)items.push({t:"생일 답례 멘트 고민",v:"cur"});
+  JC.forEach((c,i)=>items.push({t:c.t,v:i}));
+  items.filter(x=>!q||x.t.includes(q)).forEach(x=>{
+    const d=document.createElement("div");d.className="jmi"+(jmV===x.v?" on":"");d.textContent=x.t;
+    d.onclick=()=>{jmView(x.v);jmDrawer(0)};L.appendChild(d);
+  });
+  $("#jmnew").classList.toggle("on",jmV==="new"||(jmV==="cur"&&!jmSent));
+}
+function jmDrawer(on){if(on)jmList();$("#jmd").classList.toggle("on",!!on)}
+$("#jmmenu").onclick=()=>jmDrawer(1);
+$("#jmd .jbg").onclick=()=>jmDrawer(0);
+$("#jmq").oninput=jmList;
+$("#jmnew").onclick=()=>{jmView(jmSent?"new":"cur");jmDrawer(0)};
+
+// ===== 잼미나이: 들어가고 2초 뒤에 질문이 입력되고, 전송 버튼은 직접 눌러야 해요 =====
 let jmDone=0;
 function gmStart(){
-  if(jmDone)return;jmDone=1;
+  if(jmDone||cur!=="jm")return;jmDone=1;
   const Q="여친이 생일 챙겨 줬는데 뭐라고 하면 좋을까? 하 넘 고민이다......",t=$("#jmt"),sb=$("#jms"),c=$("#jmc"),body=$("#jmb");
   const sc=()=>{body.scrollTop=body.scrollHeight};
   let k=0;t.classList.add("cur");
   const type=()=>{
     if(k<Q.length){t.textContent=Q.slice(0,++k);sb.style.background="#4f8bff";setTimeout(type,k<2?400:70)}
-    else setTimeout(send,700);
+    else{sb.style.cursor="pointer";jmReady=1}   // 다 입력되면 전송 버튼을 직접 눌러야 보내져요
   };
+  sb.onclick=()=>{if(!jmReady||jmSent)return;jmReady=0;if(jmV!=="cur")jmView("cur");jmSent=1;sb.style.cursor="";send()};
   const send=()=>{
     sb.style.transform="scale(.82)";setTimeout(()=>sb.style.transform="",160);
     setTimeout(()=>{
@@ -1151,7 +1245,7 @@ function msgSpy(){
 $("#nb3").onclick=()=>{
   $("#nb3").classList.remove("on");
   const ic=[...document.querySelectorAll(".ic")].find(e=>e.textContent.includes("메시지"));
-  if(cur)goHome();
+  if(cur)leaveApp();
   msList();$("#mst").classList.remove("on");
   setTimeout(()=>{openApp("ms",ic);msOpen(T.findIndex(x=>x.ham))},60);
 };
@@ -1254,13 +1348,13 @@ $("#pup").onchange=e=>[...e.target.files].forEach(f=>ptAdd(URL.createObjectURL(f
  $("#wxw").innerHTML=W.map((w,k)=>`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;${k?"border-top:.5px solid #ffffff55":""}"><span style="width:42px;font-size:17px;font-weight:600">${w[0]}</span><span style="width:30px;display:flex;justify-content:center">${WI[w[1]]}</span><span style="width:34px;text-align:right;opacity:.75;font-size:16px">${w[2]}°</span><span style="flex:1;height:5px;border-radius:3px;background:#ffffff40;position:relative"><i style="position:absolute;top:0;bottom:0;left:${(w[2]-lo)/rg*100}%;right:${(hi-w[3])/rg*100}%;border-radius:3px;background:linear-gradient(90deg,#9be3ff,#ffd479)"></i></span><span style="width:34px;font-size:16px;font-weight:600">${w[3]}°</span></div>`).join("");}
 
 // 캘린더 (2026년 10월)
-const EV={2:[["져니 부산 가는 날 ㅠㅠ","#af52de"]],6:[["져니 올라오는 날!!!!!","#ff2d55"]],9:[["젼이랑 인어의 섬!","#34c759"]],10:[["젼이랑 인어의 섬!","#34c759"]],12:[["영종도 현장","#007aff"]],15:[["수의사랑 저녁","#30b0c7"]],22:[["전주 출장","#007aff"]],23:[["월급날 💵","#ff9f0a"],["전북대 현장","#007aff"]],24:[["젼이랑 삼신!","#34c759"]],29:[["내 생일 🎂","#ff2d55"],["자격증 접수!!!!!!","#ff3b30"]]};
+const EV={1:[["안전교육","#007aff"]],2:[["져니 부산 가는 날 ㅠㅠ","#af52de"]],5:[["미용실 ✂️","#af52de"]],6:[["져니 올라오는 날!!!!!","#ff2d55"]],8:[["치과 예약","#30b0c7"]],9:[["젼이랑 인어의 섬!","#34c759"]],10:[["젼이랑 인어의 섬!","#34c759"]],12:[["영종도 현장","#007aff"]],13:[["바비·사나 접종 💉","#30b0c7"]],15:[["수의사랑 저녁","#30b0c7"]],17:[["져니랑 데이트 ❤️","#ff2d55"]],19:[["보들자격증 공부 ✏️","#34c759"]],22:[["전주 출장","#007aff"]],23:[["월급날 💵","#ff9f0a"],["전북대 현장","#007aff"]],24:[["젼이랑 삼신!","#34c759"]],27:[["져니 회식 🍻","#af52de"]],28:[["타임빌라스 알아보기","#34c759"]],29:[["내 생일 🎂","#ff2d55"],["보들자격증 시험 접수하는 날","#ff3b30"]],30:[["택배 오는 날 📦","#ff9f0a"]],31:[["핼러윈 🎃","#ff9f0a"]]};
 for(let i=0;i<35;i++){
   const n=i-3,c=document.createElement("div");c.className="cc";
   if(n>=1&&n<=31)c.innerHTML=`<i class="${n==29?"td":""}">${n}</i>`+(EV[n]||[]).map(e=>`<div class="ev" style="background:${e[1]}">${e[0]}</div>`).join("");
   $("#cmg").appendChild(c);
 }
-[["10월 2일","져니 부산 가는 날 ㅠㅠ","#af52de"],["10월 6일","져니 올라오는 날!!!!!","#ff2d55"],["10월 9일 ~ 10일","젼이랑 인어의 섬!","#34c759"],["10월 12일","영종도 현장","#007aff"],["10월 15일","수의사랑 저녁","#30b0c7"],["10월 22일","전주 출장","#007aff"],["10월 23일","월급날 💵","#ff9f0a"],["10월 23일","전북대 현장","#007aff"],["10월 24일","젼이랑 삼신!","#34c759"],["10월 29일","내 생일 🎂","#ff2d55"],["10월 29일","자격증 접수!!!!!!","#ff3b30"]]
+[["10월 1일","안전교육","#007aff"],["10월 2일","져니 부산 가는 날 ㅠㅠ","#af52de"],["10월 5일","미용실 ✂️","#af52de"],["10월 6일","져니 올라오는 날!!!!!","#ff2d55"],["10월 8일","치과 예약","#30b0c7"],["10월 9일 ~ 10일","젼이랑 인어의 섬!","#34c759"],["10월 12일","영종도 현장","#007aff"],["10월 13일","바비·사나 접종 💉","#30b0c7"],["10월 15일","수의사랑 저녁","#30b0c7"],["10월 17일","져니랑 데이트 ❤️","#ff2d55"],["10월 19일","보들자격증 공부 ✏️","#34c759"],["10월 22일","전주 출장","#007aff"],["10월 23일","월급날 💵","#ff9f0a"],["10월 23일","전북대 현장","#007aff"],["10월 24일","젼이랑 삼신!","#34c759"],["10월 27일","져니 회식 🍻","#af52de"],["10월 28일","타임빌라스 알아보기","#34c759"],["10월 29일","내 생일 🎂","#ff2d55"],["10월 29일","보들자격증 시험 접수하는 날","#ff3b30"],["10월 30일","택배 오는 날 📦","#ff9f0a"],["10월 31일","핼러윈 🎃","#ff9f0a"]]
 .forEach(e=>{$("#cle").insertAdjacentHTML("beforeend",`<div style="display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:.5px solid #0001"><i style="width:4px;height:34px;border-radius:2px;background:${e[2]}"></i><div><b style="font-size:16px">${e[1]}</b><br><small style="color:#888">${e[0]}</small></div></div>`)});
 
 // 메모
@@ -1315,7 +1409,7 @@ function notify(){
   clearTimeout(notify.t);notify.t=setTimeout(()=>{a.classList.remove("on");b.classList.remove("on")},5500);
 }
 $("#nb").onclick=()=>{$("#nb").classList.remove("on");toast("준비 중이에요")};
-$("#nb2").onclick=()=>{$("#nb").classList.remove("on");$("#nb2").classList.remove("on");if(cur)goHome();openApp("kk",[...document.querySelectorAll("#dock .ic")][3])};
+$("#nb2").onclick=()=>{$("#nb").classList.remove("on");$("#nb2").classList.remove("on");if(cur)leaveApp();openApp("kk",[...document.querySelectorAll("#dock .ic")][3])};
 
 // 인스타그램
 const IC={
@@ -1487,7 +1581,7 @@ $("#ftvid").onended=ftHang;
 $("#ftvid").onerror=()=>{if($("#ftvid").getAttribute("src"))toast("영상 파일을 찾을 수 없어요 ("+FT_VIDEO+")")};
 $("#fta").onclick=()=>{
   ftEnd("ftin");
-  if(cur&&cur!=="call")goHome();
+  if(cur&&cur!=="call")leaveApp();
   const ic=[...document.querySelectorAll(".ic")].find(e=>e.textContent.includes("전화"));
   openApp("ph",ic);phView(1);
   const v=$("#ftvid");$("#ftvn").textContent=ME;$("#ftvt").textContent="00:00";
@@ -1891,7 +1985,7 @@ $("#nb4").onclick=()=>{
   $("#nb4").classList.remove("on");
   if(!igNew){igNew=1;igNewFeed()}
   const ic=[...document.querySelectorAll(".ic")].find(e=>e.textContent.includes("Instagram"));
-  if(cur)goHome();
+  if(cur)leaveApp();
   setTimeout(()=>{openApp("ig",ic);igTab(0)},60);
 };
 
@@ -1913,7 +2007,7 @@ function parcelTrigger(){
 $("#nb5").onclick=()=>{
   $("#nb5").classList.remove("on");
   const ic=[...document.querySelectorAll(".ic")].find(e=>e.textContent.includes("메시지"));
-  if(cur)goHome();
+  if(cur)leaveApp();
   msList();$("#mst").classList.remove("on");
   setTimeout(()=>{openApp("ms",ic);msOpen(T.findIndex(x=>x.n==="지원택배"))},60);
 };
@@ -1931,7 +2025,7 @@ function kkUnlockTrigger(){
 $("#nb6").onclick=()=>{
   $("#nb6").classList.remove("on");
   const kic=[...document.querySelectorAll("#dock .ic")].find(e=>e.textContent.includes("카카오톡"));
-  if(cur)goHome();
+  if(cur)leaveApp();
   kT++;$("#kkr").classList.remove("on");kkTab(1);kkList();
   setTimeout(()=>openApp("kk",kic),60);
 };
